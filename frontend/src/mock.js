@@ -7,7 +7,7 @@ export const portfolioData = {
     email: "dionesarr84@gmail.com",
     location: "Troyes (10600)",
     linkedin: "https://www.linkedin.com/in/el-hadj-ibrahima-dione777/",
-    github: "https://github.com/LejteH0P",
+    github: "https://github.com/Ibrah777",
     cv: "/cv_ibrahima_dione.pdf"
   },
 
@@ -95,7 +95,7 @@ Je suis basé à Troyes, en formation à distance, et je cherche un stage en dé
       tech: "C#, POO, JSON",
       status: "Terminé",
       icon: "calendar",
-      github: "https://github.com/LejteH0P/agenda-csharp",
+      github: "https://github.com/Ibrah777/agenda-csharp",
       color: "from-blue-100 to-indigo-100",
       iconColor: "text-indigo-500",
       competences: ["Conception et développement d'applications", "Qualité logicielle (POO, SOLID)", "Travail collaboratif (GitHub)"]
@@ -106,7 +106,7 @@ Je suis basé à Troyes, en formation à distance, et je cherche un stage en dé
       tech: "C#, MVC, MySQL, BCrypt",
       status: "Terminé",
       icon: "lock",
-      github: "https://github.com/LejteH0P/gestion-habilitations",
+      github: "https://github.com/Ibrah777/gestion-habilitations",
       color: "from-salmon-100 to-orange-100",
       iconColor: "text-salmon-500",
       competences: ["Gérer le patrimoine informatique", "Mettre en place des niveaux d'habilitation", "Architecture MVC, base de données"]
