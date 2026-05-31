@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Carte heuristique — Développeur Jeu Vidéo</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f0e0d;color:#f0ebe6;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:1.5rem 1rem}
+h1{font-size:1.1rem;color:#f97060;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.3rem;font-weight:700}
+p.sub{font-size:.8rem;color:#6b5f58;margin-bottom:2rem}
+.map{position:relative;width:900px;max-width:100%;height:620px}
+svg{width:100%;height:100%}
+.node{cursor:pointer;transition:transform .2s}
+.node:hover{transform-origin:center center}
+.center-circle{fill:#f97060}
+.center-text{fill:#fff;font-weight:700;font-size:14px;font-family:'Segoe UI',sans-serif}
+.branch-circle{fill:#2a211c;stroke-width:2}
+.branch-text{fill:#f0ebe6;font-size:11px;font-family:'Segoe UI',sans-serif;font-weight:600}
+.leaf-rect{rx:8;ry:8;fill:#1e1713;stroke-width:1.5}
+.leaf-text{fill:#c4b8b0;font-size:9.5px;font-family:'Segoe UI',sans-serif}
+.connector{fill:none;stroke-width:2;opacity:.6}
+.tooltip{position:absolute;background:#2a211c;border:1px solid #f97060;border-radius:10px;padding:.75rem 1rem;font-size:.82rem;color:#f0ebe6;max-width:240px;line-height:1.5;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.legend{display:flex;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;justify-content:center}
+.legend-item{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:#6b5f58}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+.back-btn{align-self:flex-start;display:flex;align-items:center;gap:.5rem;background:#1a100d;border:1px solid #f97060;color:#fca99c;font-size:.82rem;font-weight:600;padding:.45rem .9rem;border-radius:8px;cursor:pointer;text-decoration:none;margin-bottom:1.2rem;transition:background .2s}
+.back-btn:hover{background:#2a1a15}
+.back-btn svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+<a href="javascript:history.back()" class="back-btn">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+  Retour au parcours
+</a>
+<h1>Carte heuristique</h1>
+<p class="sub">Développeur Jeu Vidéo — Métier visé</p>
+
+<div class="map" id="mapContainer">
+<svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#f97060" opacity=".5"/>
+  </marker>
+</defs>
+
+<!-- Connectors from center to branches -->
+<line x1="450" y1="310" x2="210" y2="155" class="connector" stroke="#f97060"/>
+<line x1="450" y1="310" x2="690" y2="155" class="connector" stroke="#e8734a"/>
+<line x1="450" y1="310" x2="760" y2="330" class="connector" stroke="#d4956e"/>
+<line x1="450" y1="310" x2="690" y2="490" class="connector" stroke="#c4b8b0"/>
+<line x1="450" y1="310" x2="210" y2="490" class="connector" stroke="#8a7a72"/>
+<line x1="450" y1="310" x2="140" y2="330" class="connector" stroke="#6b5f58"/>
+
+<!-- Branch 1: Compétences techniques (top-left) -->
+<line x1="210" y1="155" x2="90" y2="60" class="connector" stroke="#f97060" opacity=".35"/>
+<line x1="210" y1="155" x2="80" y2="130" class="connector" stroke="#f97060" opacity=".35"/>
+<line x1="210" y1="155" x2="100" y2="200" class="connector" stroke="#f97060" opacity=".35"/>
+
+<!-- Branch 2: Langages & Moteurs (top-right) -->
+<line x1="690" y1="155" x2="800" y2="55" class="connector" stroke="#e8734a" opacity=".35"/>
+<line x1="690" y1="155" x2="830" y2="120" class="connector" stroke="#e8734a" opacity=".35"/>
+<line x1="690" y1="155" x2="820" y2="185" class="connector" stroke="#e8734a" opacity=".35"/>
+
+<!-- Branch 3: Secteurs & Studios (right) -->
+<line x1="760" y1="330" x2="860" y2="265" class="connector" stroke="#d4956e" opacity=".35"/>
+<line x1="760" y1="330" x2="870" y2="330" class="connector" stroke="#d4956e" opacity=".35"/>
+<line x1="760" y1="330" x2="860" y2="395" class="connector" stroke="#d4956e" opacity=".35"/>
+
+<!-- Branch 4: Formations (bottom-right) -->
+<line x1="690" y1="490" x2="790" y2="540" class="connector" stroke="#c4b8b0" opacity=".35"/>
+<line x1="690" y1="490" x2="770" y2="580" class="connector" stroke="#c4b8b0" opacity=".35"/>
+
+<!-- Branch 5: Missions (bottom-left) -->
+<line x1="210" y1="490" x2="130" y2="540" class="connector" stroke="#8a7a72" opacity=".35"/>
+<line x1="210" y1="490" x2="115" y2="475" class="connector" stroke="#8a7a72" opacity=".35"/>
+<line x1="210" y1="490" x2="135" y2="570" class="connector" stroke="#8a7a72" opacity=".35"/>
+
+<!-- Branch 6: Outils & Logiciels (left) -->
+<line x1="140" y1="330" x2="50" y2="275" class="connector" stroke="#6b5f58" opacity=".35"/>
+<line x1="140" y1="330" x2="45" y2="340" class="connector" stroke="#6b5f58" opacity=".35"/>
+<line x1="140" y1="330" x2="55" y2="400" class="connector" stroke="#6b5f58" opacity=".35"/>
+
+<!-- ═══ CENTER NODE ═══ -->
+<g class="node" onclick="showInfo('center')">
+  <circle cx="450" cy="310" r="62" class="center-circle" filter="url(#glow)"/>
+  <circle cx="450" cy="310" r="62" fill="#f97060"/>
+  <circle cx="450" cy="310" r="58" fill="#f97060" opacity=".3"/>
+  <text x="450" y="302" text-anchor="middle" class="center-text" font-size="13">Développeur</text>
+  <text x="450" y="318" text-anchor="middle" class="center-text" font-size="13">Jeu Vidéo</text>
+  <text x="450" y="334" text-anchor="middle" fill="#ffcec8" font-size="9" font-family="Segoe UI">Game Developer</text>
+</g>
+
+<!-- ═══ BRANCH NODES ═══ -->
+<!-- B1: Compétences techniques -->
+<g class="node" onclick="showInfo('competences')">
+  <circle cx="210" cy="155" r="42" fill="#2a211c" stroke="#f97060" stroke-width="2"/>
+  <text x="210" y="149" text-anchor="middle" class="branch-text" font-size="10">Compétences</text>
+  <text x="210" y="163" text-anchor="middle" class="branch-text" font-size="10">techniques</text>
+</g>
+
+<!-- B2: Langages & Moteurs -->
+<g class="node" onclick="showInfo('langages')">
+  <circle cx="690" cy="155" r="42" fill="#2a211c" stroke="#e8734a" stroke-width="2"/>
+  <text x="690" y="149" text-anchor="middle" class="branch-text" font-size="10">Langages &</text>
+  <text x="690" y="163" text-anchor="middle" class="branch-text" font-size="10">Moteurs</text>
+</g>
+
+<!-- B3: Secteurs -->
+<g class="node" onclick="showInfo('secteurs')">
+  <circle cx="760" cy="330" r="42" fill="#2a211c" stroke="#d4956e" stroke-width="2"/>
+  <text x="760" y="324" text-anchor="middle" class="branch-text" font-size="10">Secteurs &</text>
+  <text x="760" y="338" text-anchor="middle" class="branch-text" font-size="10">Débouchés</text>
+</g>
+
+<!-- B4: Formations -->
+<g class="node" onclick="showInfo('formations')">
+  <circle cx="690" cy="490" r="42" fill="#2a211c" stroke="#c4b8b0" stroke-width="2"/>
+  <text x="690" y="484" text-anchor="middle" class="branch-text" font-size="10">Formations</text>
+  <text x="690" y="498" text-anchor="middle" class="branch-text" font-size="10">& Écoles</text>
+</g>
+
+<!-- B5: Missions -->
+<g class="node" onclick="showInfo('missions')">
+  <circle cx="210" cy="490" r="42" fill="#2a211c" stroke="#8a7a72" stroke-width="2"/>
+  <text x="210" y="484" text-anchor="middle" class="branch-text" font-size="10">Missions</text>
+  <text x="210" y="498" text-anchor="middle" class="branch-text" font-size="10">du métier</text>
+</g>
+
+<!-- B6: Outils -->
+<g class="node" onclick="showInfo('outils')">
+  <circle cx="140" cy="330" r="42" fill="#2a211c" stroke="#6b5f58" stroke-width="2"/>
+  <text x="140" y="324" text-anchor="middle" class="branch-text" font-size="10">Outils &</text>
+  <text x="140" y="338" text-anchor="middle" class="branch-text" font-size="10">Logiciels</text>
+</g>
+
+<!-- ═══ LEAF NODES ═══ -->
+<!-- B1 leaves -->
+<g class="node" onclick="showInfo('l1a')"><rect x="20" y="38" width="110" height="26" class="leaf-rect" stroke="#f97060"/><text x="75" y="55" text-anchor="middle" class="leaf-text">Programmation</text></g>
+<g class="node" onclick="showInfo('l1b')"><rect x="10" y="112" width="115" height="26" class="leaf-rect" stroke="#f97060"/><text x="68" y="129" text-anchor="middle" class="leaf-text">Mathématiques</text></g>
+<g class="node" onclick="showInfo('l1c')"><rect x="18" y="185" width="110" height="26" class="leaf-rect" stroke="#f97060"/><text x="73" y="202" text-anchor="middle" class="leaf-text">Physique de jeu</text></g>
+
+<!-- B2 leaves -->
+<g class="node" onclick="showInfo('l2a')"><rect x="730" y="32" width="100" height="26" class="leaf-rect" stroke="#e8734a"/><text x="780" y="49" text-anchor="middle" class="leaf-text">C++ / C#</text></g>
+<g class="node" onclick="showInfo('l2b')"><rect x="757" y="95" width="100" height="26" class="leaf-rect" stroke="#e8734a"/><text x="807" y="112" text-anchor="middle" class="leaf-text">Unity / Unreal</text></g>
+<g class="node" onclick="showInfo('l2c')"><rect x="748" y="162" width="100" height="26" class="leaf-rect" stroke="#e8734a"/><text x="798" y="179" text-anchor="middle" class="leaf-text">Python / GDScript</text></g>
+
+<!-- B3 leaves -->
+<g class="node" onclick="showInfo('l3a')"><rect x="787" y="245" width="100" height="26" class="leaf-rect" stroke="#d4956e"/><text x="837" y="262" text-anchor="middle" class="leaf-text">Studios AAA</text></g>
+<g class="node" onclick="showInfo('l3b')"><rect x="793" y="310" width="100" height="26" class="leaf-rect" stroke="#d4956e"/><text x="843" y="327" text-anchor="middle" class="leaf-text">Indépendant</text></g>
+<g class="node" onclick="showInfo('l3c')"><rect x="787" y="375" width="100" height="26" class="leaf-rect" stroke="#d4956e"/><text x="837" y="392" text-anchor="middle" class="leaf-text">Simulation / VR</text></g>
+
+<!-- B4 leaves -->
+<g class="node" onclick="showInfo('l4a')"><rect x="737" y="525" width="115" height="26" class="leaf-rect" stroke="#c4b8b0"/><text x="795" y="542" text-anchor="middle" class="leaf-text">ISART Digital</text></g>
+<g class="node" onclick="showInfo('l4b')"><rect x="720" y="562" width="115" height="26" class="leaf-rect" stroke="#c4b8b0"/><text x="778" y="579" text-anchor="middle" class="leaf-text">Brassart / EPITECH</text></g>
+
+<!-- B5 leaves -->
+<g class="node" onclick="showInfo('l5a')"><rect x="30" y="525" width="110" height="26" class="leaf-rect" stroke="#8a7a72"/><text x="85" y="542" text-anchor="middle" class="leaf-text">Gameplay</text></g>
+<g class="node" onclick="showInfo('l5b')"><rect x="20" y="455" width="110" height="26" class="leaf-rect" stroke="#8a7a72"/><text x="75" y="472" text-anchor="middle" class="leaf-text">IA & ennemis</text></g>
+<g class="node" onclick="showInfo('l5c')"><rect x="28" y="555" width="115" height="26" class="leaf-rect" stroke="#8a7a72"/><text x="85" y="572" text-anchor="middle" class="leaf-text">Moteur physique</text></g>
+
+<!-- B6 leaves -->
+<g class="node" onclick="showInfo('l6a')"><rect x="5" y="253" width="90" height="26" class="leaf-rect" stroke="#6b5f58"/><text x="50" y="270" text-anchor="middle" class="leaf-text">Git / GitHub</text></g>
+<g class="node" onclick="showInfo('l6b')"><rect x="2" y="318" width="90" height="26" class="leaf-rect" stroke="#6b5f58"/><text x="47" y="335" text-anchor="middle" class="leaf-text">Visual Studio</text></g>
+<g class="node" onclick="showInfo('l6c')"><rect x="8" y="383" width="90" height="26" class="leaf-rect" stroke="#6b5f58"/><text x="53" y="400" text-anchor="middle" class="leaf-text">Blender / Maya</text></g>
+</svg>
+<div class="tooltip" id="tooltip"></div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#f97060"></div>Compétences techniques</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#e8734a"></div>Langages & Moteurs</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#d4956e"></div>Secteurs</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#c4b8b0"></div>Formations</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8a7a72"></div>Missions</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6b5f58"></div>Outils</div>
+</div>
+
+<script>
+const infos = {
+  center: {t:"Développeur Jeu Vidéo", d:"Conçoit et programme les mécaniques d'un jeu vidéo : moteur physique, gameplay, IA des personnages, interfaces. C'est le métier que je vise après le BTS SIO SLAM."},
+  competences: {t:"Compétences techniques", d:"Un développeur jeu vidéo doit maîtriser la programmation orientée objet, les mathématiques (vecteurs, matrices) et les principes de physique pour simuler les interactions dans le jeu."},
+  langages: {t:"Langages & Moteurs", d:"Les langages principaux sont C++ (Unreal Engine), C# (Unity) et Python. Les moteurs de jeu (Unity, Unreal, Godot) fournissent les outils pour créer des environnements 3D/2D."},
+  secteurs: {t:"Secteurs & Débouchés", d:"Studios AAA (Ubisoft, EA), studios indépendants (indie), simulation industrielle, réalité virtuelle (VR/AR). Le marché du jeu vidéo est l'un des plus dynamiques du secteur numérique."},
+  formations: {t:"Formations & Écoles", d:"Après le BTS SIO, je vise une licence pro ou une école spécialisée comme ISART Digital, Brassart ou EPITECH Game Institute pour me spécialiser dans le développement de jeux."},
+  missions: {t:"Missions du métier", d:"Programmer le gameplay, concevoir l'IA des ennemis, implémenter le moteur physique, collaborer avec les game designers et les artistes 3D pour créer une expérience cohérente."},
+  outils: {t:"Outils & Logiciels", d:"Git/GitHub pour la gestion du code, Visual Studio / VS Code comme IDE, Blender ou Maya pour les assets 3D, et les moteurs Unity ou Unreal Engine pour l'environnement de développement."},
+  l1a: {t:"Programmation", d:"POO, design patterns (Singleton, Observer, Factory), algorithmes et structures de données sont essentiels pour coder un jeu vidéo robuste et maintenable."},
+  l1b: {t:"Mathématiques", d:"Vecteurs, matrices, trigonométrie, quaternions pour les rotations 3D. Les maths sont omniprésentes dans les moteurs de jeu pour gérer les positions, mouvements et collisions."},
+  l1c: {t:"Physique de jeu", d:"Simulation des lois physiques : gravité, collisions, forces. Des moteurs comme Box2D (2D) ou PhysX (3D) gèrent ces calculs, mais le développeur doit en comprendre les bases."},
+  l2a: {t:"C++ / C#", d:"C++ est le langage d'Unreal Engine, très performant. C# est utilisé dans Unity, plus accessible. Je maîtrise C# via ma formation BTS SIO SLAM."},
+  l2b: {t:"Unity / Unreal Engine", d:"Unity (C#) est idéal pour les indépendants et le mobile. Unreal (C++) est utilisé pour les productions AAA photoréalistes. Les deux sont gratuits pour commencer."},
+  l2c: {t:"Python / GDScript", d:"Python est utilisé pour le scripting et les outils de pipeline. GDScript est le langage natif de Godot Engine, moteur open source en pleine expansion."},
+  l3a: {t:"Studios AAA", d:"Ubisoft, Electronic Arts, Activision, Naughty Dog... Ces grands studios emploient des centaines de développeurs. Ils offrent des salaires élevés mais demandent une forte expérience."},
+  l3b: {t:"Indépendant (Indie)", d:"De nombreux développeurs créent leurs propres jeux en petites équipes. Les plateformes Steam et itch.io permettent de les distribuer facilement. Minecraft a commencé comme un projet indie !"},
+  l3c: {t:"Simulation & VR", d:"Secteurs en croissance : simulateurs de formation (armée, médecine), réalité virtuelle (Meta Quest, PlayStation VR) et réalité augmentée. Les compétences sont très proches du jeu vidéo."},
+  l4a: {t:"ISART Digital", d:"École de référence en France pour le jeu vidéo et les effets spéciaux. Propose des bachelors et masters reconnus par les studios. Basée à Paris, Lyon et Montréal."},
+  l4b: {t:"Brassart / EPITECH", d:"Brassart forme aux métiers créatifs numériques. EPITECH Game Institute est spécialisé dans le développement de jeux. Ces écoles peuvent s'intégrer après un BTS."},
+  l5a: {t:"Gameplay", d:"Programmer les règles du jeu, les interactions joueur/environnement, le système de score, les niveaux. C'est le cœur créatif du métier de développeur jeu vidéo."},
+  l5b: {t:"IA & Ennemis", d:"Concevoir le comportement des personnages non-joueurs (PNJ) : pathfinding (A*), machines à états, arbres de comportement. Une IA bien faite rend le jeu immersif."},
+  l5c: {t:"Moteur physique", d:"Implémenter la gravité, les collisions, les rebonds, les explosions. Utiliser des bibliothèques physiques ou coder ses propres algorithmes pour des comportements réalistes."},
+  l6a: {t:"Git / GitHub", d:"Indispensable pour travailler en équipe sur un projet de jeu. Gestion des versions, branches pour les features, pull requests pour la revue de code. Appris en BTS SIO."},
+  l6b: {t:"Visual Studio / VS Code", d:"IDEs utilisés pour développer en C# (Unity) ou C++ (Unreal). Offrent débogage, autocomplétion et intégration Git. Visual Studio est l'outil principal de mon BTS."},
+  l6c: {t:"Blender / Maya", d:"Logiciels de modélisation 3D pour créer les assets du jeu. Blender est gratuit et open source, Maya est l'outil standard dans les studios professionnels."},
+};
+
+const tip = document.getElementById('tooltip');
+const container = document.getElementById('mapContainer');
+
+function showInfo(key) {
+  const d = infos[key];
+  if (!d) return;
+  tip.innerHTML = `<strong style="color:#f97060">${d.t}</strong><br/><span style="color:#c4b8b0">${d.d}</span>`;
+  tip.style.opacity = '1';
+  setTimeout(() => { tip.style.opacity = '0'; }, 4000);
+}
+
+container.addEventListener('mousemove', e => {
+  const r = container.getBoundingClientRect();
+  let x = e.clientX - r.left + 12;
+  let y = e.clientY - r.top + 12;
+  if (x + 260 > r.width) x = e.clientX - r.left - 260;
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+});
+</script>
+</body>
+</html>

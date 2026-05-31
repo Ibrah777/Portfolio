@@ -1,0 +1,99 @@
+.App {
+  min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.salmon-500 {
+  color: #fa8072;
+}
+
+.hover\:text-salmon-500:hover {
+  color: #fa8072;
+}
+
+.bg-salmon-500 {
+  background-color: #fa8072;
+}
+
+.hover\:bg-salmon-600:hover {
+  background-color: #e76f5f;
+}
+
+.from-salmon-400 {
+  --tw-gradient-from: #ff9a85;
+  --tw-gradient-to: rgb(255 154 133 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-coral-500 {
+  --tw-gradient-to: #ff7f50;
+}
+
+.from-salmon-100 {
+  --tw-gradient-from: #ffe4e1;
+  --tw-gradient-to: rgb(255 228 225 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-coral-100 {
+  --tw-gradient-to: #ffd7cc;
+}
+
+.bg-salmon-100 {
+  background-color: #ffe4e1;
+}
+
+.text-salmon-700 {
+  color: #c76856;
+}
+
+.text-salmon-600 {
+  color: #e76f5f;
+}
+
+.hover\:bg-salmon-200:hover {
+  background-color: #ffc9c0;
+}
+
+.hover\:bg-salmon-100:hover {
+  background-color: #ffe4e1;
+}
+
+.bg-salmon-50 {
+  background-color: #fff5f5;
+}
+
+.border-salmon-200 {
+  border-color: #ffc9c0;
+}
+
+.border-salmon-300 {
+  border-color: #ffb3a3;
+}
+
+.border-salmon-400 {
+  border-color: #ff9a85;
+}
+
+.border-t-salmon-400 {
+  border-top-color: #ff9a85;
+}
+
+.border-l-salmon-400 {
+  border-left-color: #ff9a85;
+}
+
+.focus\:border-salmon-500:focus {
+  border-color: #fa8072;
+}
+
+.focus\:ring-salmon-500:focus {
+  --tw-ring-color: #fa8072;
+}
+
+.hover\:text-salmon-400:hover {
+  color: #ff9a85;
+}

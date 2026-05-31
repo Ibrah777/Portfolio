@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Carte heuristique — Développeur Web Full-Stack</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#071a0f;color:#f0f7f2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:1.5rem 1rem}
+.back-btn{align-self:flex-start;display:flex;align-items:center;gap:.5rem;background:#0d2a18;border:1px solid #22c55e;color:#86efac;font-size:.82rem;font-weight:600;padding:.45rem .9rem;border-radius:8px;cursor:pointer;text-decoration:none;margin-bottom:1.2rem;transition:background .2s}
+.back-btn:hover{background:#163d24}
+.back-btn svg{width:14px;height:14px}
+h1{font-size:1.1rem;color:#22c55e;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.3rem;font-weight:700}
+p.sub{font-size:.8rem;color:#2d5a3d;margin-bottom:2rem}
+.map{position:relative;width:900px;max-width:100%;height:620px}
+svg{width:100%;height:100%}
+.node{cursor:pointer;transition:transform .2s}
+.center-text{fill:#fff;font-weight:700;font-size:14px;font-family:'Segoe UI',sans-serif}
+.branch-text{fill:#dcfce7;font-size:11px;font-family:'Segoe UI',sans-serif;font-weight:600}
+.leaf-text{fill:#86efac;font-size:9.5px;font-family:'Segoe UI',sans-serif}
+.connector{fill:none;stroke-width:2;opacity:.6}
+.tooltip{position:absolute;background:#0d2a18;border:1px solid #22c55e;border-radius:10px;padding:.75rem 1rem;font-size:.82rem;color:#dcfce7;max-width:240px;line-height:1.5;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10;box-shadow:0 8px 30px rgba(0,0,0,.6)}
+.legend{display:flex;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;justify-content:center}
+.legend-item{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:#2d5a3d}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+</style>
+</head>
+<body>
+<a href="javascript:history.back()" class="back-btn">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+  Retour au parcours
+</a>
+<h1>Carte heuristique</h1>
+<p class="sub">Développeur Web Full-Stack — Métier visé</p>
+
+<div class="map" id="mapContainer">
+<svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg">
+
+<line x1="450" y1="310" x2="210" y2="155" class="connector" stroke="#22c55e"/>
+<line x1="450" y1="310" x2="690" y2="155" class="connector" stroke="#4ade80"/>
+<line x1="450" y1="310" x2="760" y2="330" class="connector" stroke="#86efac"/>
+<line x1="450" y1="310" x2="690" y2="490" class="connector" stroke="#16a34a"/>
+<line x1="450" y1="310" x2="210" y2="490" class="connector" stroke="#15803d"/>
+<line x1="450" y1="310" x2="140" y2="330" class="connector" stroke="#166534"/>
+
+<line x1="210" y1="155" x2="90" y2="60" class="connector" stroke="#22c55e" opacity=".35"/>
+<line x1="210" y1="155" x2="80" y2="130" class="connector" stroke="#22c55e" opacity=".35"/>
+<line x1="210" y1="155" x2="100" y2="200" class="connector" stroke="#22c55e" opacity=".35"/>
+<line x1="690" y1="155" x2="800" y2="55" class="connector" stroke="#4ade80" opacity=".35"/>
+<line x1="690" y1="155" x2="830" y2="120" class="connector" stroke="#4ade80" opacity=".35"/>
+<line x1="690" y1="155" x2="820" y2="185" class="connector" stroke="#4ade80" opacity=".35"/>
+<line x1="760" y1="330" x2="860" y2="265" class="connector" stroke="#86efac" opacity=".35"/>
+<line x1="760" y1="330" x2="870" y2="330" class="connector" stroke="#86efac" opacity=".35"/>
+<line x1="760" y1="330" x2="860" y2="395" class="connector" stroke="#86efac" opacity=".35"/>
+<line x1="690" y1="490" x2="790" y2="540" class="connector" stroke="#16a34a" opacity=".35"/>
+<line x1="690" y1="490" x2="770" y2="580" class="connector" stroke="#16a34a" opacity=".35"/>
+<line x1="210" y1="490" x2="130" y2="540" class="connector" stroke="#15803d" opacity=".35"/>
+<line x1="210" y1="490" x2="115" y2="475" class="connector" stroke="#15803d" opacity=".35"/>
+<line x1="210" y1="490" x2="135" y2="570" class="connector" stroke="#15803d" opacity=".35"/>
+<line x1="140" y1="330" x2="50" y2="275" class="connector" stroke="#166534" opacity=".35"/>
+<line x1="140" y1="330" x2="45" y2="340" class="connector" stroke="#166534" opacity=".35"/>
+<line x1="140" y1="330" x2="55" y2="400" class="connector" stroke="#166534" opacity=".35"/>
+
+<!-- CENTER -->
+<g class="node" onclick="showInfo('center')">
+  <circle cx="450" cy="310" r="62" fill="#22c55e"/>
+  <circle cx="450" cy="310" r="58" fill="#22c55e" opacity=".25"/>
+  <text x="450" y="299" text-anchor="middle" class="center-text" font-size="11">Développeur</text>
+  <text x="450" y="313" text-anchor="middle" class="center-text" font-size="11">Web</text>
+  <text x="450" y="327" text-anchor="middle" class="center-text" font-size="11">Full-Stack</text>
+  <text x="450" y="341" text-anchor="middle" fill="#bbf7d0" font-size="8.5" font-family="Segoe UI">Web Developer</text>
+</g>
+
+<!-- B1 Frontend -->
+<g class="node" onclick="showInfo('frontend')">
+  <circle cx="210" cy="155" r="42" fill="#0d2a18" stroke="#22c55e" stroke-width="2"/>
+  <text x="210" y="149" text-anchor="middle" class="branch-text" font-size="10">Front-end</text>
+  <text x="210" y="163" text-anchor="middle" class="branch-text" font-size="10">& UI</text>
+</g>
+<!-- B2 Backend -->
+<g class="node" onclick="showInfo('backend')">
+  <circle cx="690" cy="155" r="42" fill="#0d2a18" stroke="#4ade80" stroke-width="2"/>
+  <text x="690" y="149" text-anchor="middle" class="branch-text" font-size="10">Back-end</text>
+  <text x="690" y="163" text-anchor="middle" class="branch-text" font-size="10">& API</text>
+</g>
+<!-- B3 BDD -->
+<g class="node" onclick="showInfo('bdd')">
+  <circle cx="760" cy="330" r="42" fill="#0d2a18" stroke="#86efac" stroke-width="2"/>
+  <text x="760" y="324" text-anchor="middle" class="branch-text" font-size="10">Bases de</text>
+  <text x="760" y="338" text-anchor="middle" class="branch-text" font-size="10">données</text>
+</g>
+<!-- B4 Deploiement -->
+<g class="node" onclick="showInfo('deploy')">
+  <circle cx="690" cy="490" r="42" fill="#0d2a18" stroke="#16a34a" stroke-width="2"/>
+  <text x="690" y="484" text-anchor="middle" class="branch-text" font-size="10">Déploiement</text>
+  <text x="690" y="498" text-anchor="middle" class="branch-text" font-size="10">& DevOps</text>
+</g>
+<!-- B5 Missions -->
+<g class="node" onclick="showInfo('missions')">
+  <circle cx="210" cy="490" r="42" fill="#0d2a18" stroke="#15803d" stroke-width="2"/>
+  <text x="210" y="484" text-anchor="middle" class="branch-text" font-size="10">Missions</text>
+  <text x="210" y="498" text-anchor="middle" class="branch-text" font-size="10">du métier</text>
+</g>
+<!-- B6 Qualité -->
+<g class="node" onclick="showInfo('qualite')">
+  <circle cx="140" cy="330" r="42" fill="#0d2a18" stroke="#166534" stroke-width="2"/>
+  <text x="140" y="324" text-anchor="middle" class="branch-text" font-size="10">Qualité</text>
+  <text x="140" y="338" text-anchor="middle" class="branch-text" font-size="10">& Méthodes</text>
+</g>
+
+<!-- B1 leaves -->
+<g class="node" onclick="showInfo('l1a')"><rect x="20" y="38" width="110" height="26" rx="8" ry="8" fill="#071a0f" stroke="#22c55e" stroke-width="1.5"/><text x="75" y="55" text-anchor="middle" class="leaf-text">React / Vue</text></g>
+<g class="node" onclick="showInfo('l1b')"><rect x="10" y="112" width="115" height="26" rx="8" ry="8" fill="#071a0f" stroke="#22c55e" stroke-width="1.5"/><text x="68" y="129" text-anchor="middle" class="leaf-text">HTML / CSS / JS</text></g>
+<g class="node" onclick="showInfo('l1c')"><rect x="18" y="185" width="110" height="26" rx="8" ry="8" fill="#071a0f" stroke="#22c55e" stroke-width="1.5"/><text x="73" y="202" text-anchor="middle" class="leaf-text">Tailwind / Bootstrap</text></g>
+
+<!-- B2 leaves -->
+<g class="node" onclick="showInfo('l2a')"><rect x="730" y="32" width="100" height="26" rx="8" ry="8" fill="#071a0f" stroke="#4ade80" stroke-width="1.5"/><text x="780" y="49" text-anchor="middle" class="leaf-text">Python / FastAPI</text></g>
+<g class="node" onclick="showInfo('l2b')"><rect x="757" y="95" width="100" height="26" rx="8" ry="8" fill="#071a0f" stroke="#4ade80" stroke-width="1.5"/><text x="807" y="112" text-anchor="middle" class="leaf-text">Node.js / PHP</text></g>
+<g class="node" onclick="showInfo('l2c')"><rect x="748" y="162" width="100" height="26" rx="8" ry="8" fill="#071a0f" stroke="#4ade80" stroke-width="1.5"/><text x="798" y="179" text-anchor="middle" class="leaf-text">REST API / GraphQL</text></g>
+
+<!-- B3 leaves -->
+<g class="node" onclick="showInfo('l3a')"><rect x="787" y="245" width="100" height="26" rx="8" ry="8" fill="#071a0f" stroke="#86efac" stroke-width="1.5"/><text x="837" y="262" text-anchor="middle" class="leaf-text">MySQL / PostgreSQL</text></g>
+<g class="node" onclick="showInfo('l3b')"><rect x="793" y="310" width="100" height="26" rx="8" ry="8" fill="#071a0f" stroke="#86efac" stroke-width="1.5"/><text x="843" y="327" text-anchor="middle" class="leaf-text">MongoDB</text></g>
+<g class="node" onclick="showInfo('l3c')"><rect x="787" y="375" width="100" height="26" rx="8" ry="8" fill="#071a0f" stroke="#86efac" stroke-width="1.5"/><text x="837" y="392" text-anchor="middle" class="leaf-text">Redis / Supabase</text></g>
+
+<!-- B4 leaves -->
+<g class="node" onclick="showInfo('l4a')"><rect x="737" y="525" width="115" height="26" rx="8" ry="8" fill="#071a0f" stroke="#16a34a" stroke-width="1.5"/><text x="795" y="542" text-anchor="middle" class="leaf-text">Vercel / Render</text></g>
+<g class="node" onclick="showInfo('l4b')"><rect x="720" y="562" width="115" height="26" rx="8" ry="8" fill="#071a0f" stroke="#16a34a" stroke-width="1.5"/><text x="778" y="579" text-anchor="middle" class="leaf-text">Docker / CI-CD</text></g>
+
+<!-- B5 leaves -->
+<g class="node" onclick="showInfo('l5a')"><rect x="30" y="525" width="110" height="26" rx="8" ry="8" fill="#071a0f" stroke="#15803d" stroke-width="1.5"/><text x="85" y="542" text-anchor="middle" class="leaf-text">Conception UI/UX</text></g>
+<g class="node" onclick="showInfo('l5b')"><rect x="20" y="455" width="110" height="26" rx="8" ry="8" fill="#071a0f" stroke="#15803d" stroke-width="1.5"/><text x="75" y="472" text-anchor="middle" class="leaf-text">Intégration API</text></g>
+<g class="node" onclick="showInfo('l5c')"><rect x="28" y="555" width="115" height="26" rx="8" ry="8" fill="#071a0f" stroke="#15803d" stroke-width="1.5"/><text x="85" y="572" text-anchor="middle" class="leaf-text">Maintenance / debug</text></g>
+
+<!-- B6 leaves -->
+<g class="node" onclick="showInfo('l6a')"><rect x="5" y="253" width="90" height="26" rx="8" ry="8" fill="#071a0f" stroke="#166534" stroke-width="1.5"/><text x="50" y="270" text-anchor="middle" class="leaf-text">Git / GitHub</text></g>
+<g class="node" onclick="showInfo('l6b')"><rect x="2" y="318" width="90" height="26" rx="8" ry="8" fill="#071a0f" stroke="#166534" stroke-width="1.5"/><text x="47" y="335" text-anchor="middle" class="leaf-text">Tests unitaires</text></g>
+<g class="node" onclick="showInfo('l6c')"><rect x="8" y="383" width="90" height="26" rx="8" ry="8" fill="#071a0f" stroke="#166534" stroke-width="1.5"/><text x="53" y="400" text-anchor="middle" class="leaf-text">SOLID / DRY / KISS</text></g>
+</svg>
+<div class="tooltip" id="tooltip"></div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Front-end</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>Back-end</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#86efac"></div>Bases de données</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>Déploiement</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#15803d"></div>Missions</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#166534"></div>Qualité</div>
+</div>
+
+<script>
+const infos = {
+  center: {t:"Développeur Web Full-Stack", d:"Maîtrise à la fois le front-end (interface utilisateur) et le back-end (serveur, base de données). C'est une compétence transversale que je développe notamment à travers ce portfolio (React + FastAPI + MongoDB)."},
+  frontend: {t:"Front-end & UI", d:"Le front-end gère tout ce que l'utilisateur voit et avec quoi il interagit. React est le framework que j'utilise sur ce portfolio. HTML, CSS et JavaScript en sont les fondations."},
+  backend: {t:"Back-end & API", d:"Le back-end gère la logique serveur, les données et la sécurité. FastAPI (Python) propulse l'API de ce portfolio. Node.js et PHP sont aussi très répandus dans l'écosystème web."},
+  bdd: {t:"Bases de données", d:"Stocker et récupérer les données de l'application. MySQL et PostgreSQL pour les bases relationnelles, MongoDB pour le NoSQL (utilisé dans ce portfolio). Redis pour le cache, Supabase pour les solutions modernes."},
+  deploy: {t:"Déploiement & DevOps", d:"Mettre l'application en production et la maintenir. Vercel pour le front-end React, Render pour le back-end FastAPI, MongoDB Atlas pour la base. Docker et CI/CD automatisent les mises en production."},
+  missions: {t:"Missions du métier", d:"Concevoir des interfaces (UI/UX), intégrer des API tierces, maintenir et débugger des applications existantes, optimiser les performances. Le full-stack intervient sur toute la chaîne de valeur."},
+  qualite: {t:"Qualité & Méthodes", d:"Écrire du code maintenable grâce aux principes SOLID, DRY et KISS. Utiliser Git pour versionner, écrire des tests unitaires pour valider. Ces bonnes pratiques sont enseignées en BTS SIO SLAM."},
+  l1a: {t:"React / Vue", d:"React (Meta) et Vue.js sont les deux frameworks front-end les plus populaires. Je développe ce portfolio avec React — composants réutilisables, gestion d'état, hooks pour les effets."},
+  l1b: {t:"HTML / CSS / JavaScript", d:"Les trois piliers du web. HTML structure le contenu, CSS le met en forme, JavaScript le rend interactif. Toute techno front-end repose dessus."},
+  l1c: {t:"Tailwind / Bootstrap", d:"Frameworks CSS qui accélèrent le design. Tailwind (utility-first) est utilisé dans ce portfolio pour des styles précis sans CSS custom. Bootstrap est plus opinioné mais très répandu."},
+  l2a: {t:"Python / FastAPI", d:"FastAPI est le framework Python moderne pour créer des API REST rapides et documentées automatiquement (Swagger). C'est le back-end de ce portfolio."},
+  l2b: {t:"Node.js / PHP", d:"Node.js permet d'utiliser JavaScript côté serveur — idéal pour les applications temps réel. PHP est encore très répandu (WordPress, Laravel) et reste enseigné en BTS SIO SLAM."},
+  l2c: {t:"REST API / GraphQL", d:"REST est l'architecture standard pour les API web (HTTP + JSON). GraphQL est une alternative flexible qui permet au client de demander exactement les données dont il a besoin."},
+  l3a: {t:"MySQL / PostgreSQL", d:"Bases relationnelles (tables, SQL). MySQL est très répandu en hébergement mutualisé. PostgreSQL est plus puissant et recommandé pour les applications sérieuses. Appris en BTS SIO."},
+  l3b: {t:"MongoDB", d:"Base NoSQL orientée documents (JSON). Flexible, adapté aux données changeantes. C'est la base utilisée dans ce portfolio avec MongoDB Atlas pour l'hébergement cloud."},
+  l3c: {t:"Redis / Supabase", d:"Redis est une base en mémoire utilisée pour le cache et les sessions. Supabase est une alternative open source à Firebase (back-end as a service avec PostgreSQL)."},
+  l4a: {t:"Vercel / Render", d:"Vercel déploie les applications React automatiquement depuis GitHub. Render héberge les API FastAPI. Ce sont les plateformes prévues pour déployer ce portfolio."},
+  l4b: {t:"Docker / CI/CD", d:"Docker containerise l'application pour un déploiement cohérent. Les pipelines CI/CD (GitHub Actions) automatisent les tests et déploiements à chaque push."},
+  l5a: {t:"Conception UI/UX", d:"Concevoir des interfaces intuitives et esthétiques. Penser l'expérience utilisateur (UX) avant de coder. Des outils comme Figma permettent de prototyper avant de développer."},
+  l5b: {t:"Intégration API", d:"Connecter l'application à des services tiers via leur API. Exemple concret : ce portfolio intègre l'API RAWG.io pour récupérer les actualités gaming en temps réel."},
+  l5c: {t:"Maintenance & Debug", d:"Corriger les bugs, mettre à jour les dépendances, améliorer les performances. La maintenance représente souvent plus de 60% du travail d'un développeur en entreprise."},
+  l6a: {t:"Git / GitHub", d:"Versionner le code, collaborer en équipe, gérer les branches et les pull requests. GitHub héberge les projets publics — dont les repos de ce portfolio."},
+  l6b: {t:"Tests unitaires", d:"Vérifier qu'une fonction produit le bon résultat. Éviter les régressions lors des modifications. Appris en BTS SIO avec les frameworks de test selon le langage (JUnit, pytest...)."},
+  l6c: {t:"SOLID / DRY / KISS", d:"Principes de qualité logicielle. SOLID pour la conception objet, DRY (Don't Repeat Yourself) pour éviter la duplication, KISS (Keep It Simple) pour limiter la complexité inutile."},
+};
+
+const tip = document.getElementById('tooltip');
+const container = document.getElementById('mapContainer');
+
+function showInfo(key) {
+  const d = infos[key];
+  if (!d) return;
+  tip.innerHTML = `<strong style="color:#4ade80">${d.t}</strong><br/><span style="color:#86efac">${d.d}</span>`;
+  tip.style.opacity = '1';
+  setTimeout(() => { tip.style.opacity = '0'; }, 4500);
+}
+
+container.addEventListener('mousemove', e => {
+  const r = container.getBoundingClientRect();
+  let x = e.clientX - r.left + 12;
+  let y = e.clientY - r.top + 12;
+  if (x + 260 > r.width) x = e.clientX - r.left - 260;
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+});
+</script>
+</body>
+</html>

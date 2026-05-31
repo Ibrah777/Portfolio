@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Carte heuristique — Animateur 3D</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a0d12;color:#f0ebe6;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:1.5rem 1rem}
+.back-btn{align-self:flex-start;display:flex;align-items:center;gap:.5rem;background:#1a2030;border:1px solid #3b82f6;color:#93c5fd;font-size:.82rem;font-weight:600;padding:.45rem .9rem;border-radius:8px;cursor:pointer;text-decoration:none;margin-bottom:1.2rem;transition:background .2s}
+.back-btn:hover{background:#263047}
+.back-btn svg{width:14px;height:14px}
+h1{font-size:1.1rem;color:#60a5fa;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.3rem;font-weight:700}
+p.sub{font-size:.8rem;color:#4b5a72;margin-bottom:2rem}
+.map{position:relative;width:900px;max-width:100%;height:620px}
+svg{width:100%;height:100%}
+.node{cursor:pointer;transition:transform .2s}
+.node:hover{transform-origin:center center}
+.center-circle{fill:#3b82f6}
+.center-text{fill:#fff;font-weight:700;font-size:14px;font-family:'Segoe UI',sans-serif}
+.branch-circle{fill:#0f1929;stroke-width:2}
+.branch-text{fill:#e2e8f0;font-size:11px;font-family:'Segoe UI',sans-serif;font-weight:600}
+.leaf-rect{rx:8;ry:8;fill:#0d1520;stroke-width:1.5}
+.leaf-text{fill:#94a3b8;font-size:9.5px;font-family:'Segoe UI',sans-serif}
+.connector{fill:none;stroke-width:2;opacity:.6}
+.tooltip{position:absolute;background:#0f1929;border:1px solid #3b82f6;border-radius:10px;padding:.75rem 1rem;font-size:.82rem;color:#e2e8f0;max-width:240px;line-height:1.5;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10;box-shadow:0 8px 30px rgba(0,0,0,.6)}
+.legend{display:flex;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;justify-content:center}
+.legend-item{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:#4b5a72}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+</style>
+</head>
+<body>
+<a href="javascript:history.back()" class="back-btn">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+  Retour au parcours
+</a>
+<h1>Carte heuristique</h1>
+<p class="sub">Animateur 3D — Métier visé</p>
+
+<div class="map" id="mapContainer">
+<svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg">
+
+<!-- Connectors center to branches -->
+<line x1="450" y1="310" x2="210" y2="155" class="connector" stroke="#3b82f6"/>
+<line x1="450" y1="310" x2="690" y2="155" class="connector" stroke="#60a5fa"/>
+<line x1="450" y1="310" x2="760" y2="330" class="connector" stroke="#818cf8"/>
+<line x1="450" y1="310" x2="690" y2="490" class="connector" stroke="#a5b4fc"/>
+<line x1="450" y1="310" x2="210" y2="490" class="connector" stroke="#6366f1"/>
+<line x1="450" y1="310" x2="140" y2="330" class="connector" stroke="#4f46e5"/>
+
+<!-- B1 leaves -->
+<line x1="210" y1="155" x2="90" y2="60" class="connector" stroke="#3b82f6" opacity=".35"/>
+<line x1="210" y1="155" x2="80" y2="130" class="connector" stroke="#3b82f6" opacity=".35"/>
+<line x1="210" y1="155" x2="100" y2="200" class="connector" stroke="#3b82f6" opacity=".35"/>
+<!-- B2 leaves -->
+<line x1="690" y1="155" x2="800" y2="55" class="connector" stroke="#60a5fa" opacity=".35"/>
+<line x1="690" y1="155" x2="830" y2="120" class="connector" stroke="#60a5fa" opacity=".35"/>
+<line x1="690" y1="155" x2="820" y2="185" class="connector" stroke="#60a5fa" opacity=".35"/>
+<!-- B3 leaves -->
+<line x1="760" y1="330" x2="860" y2="265" class="connector" stroke="#818cf8" opacity=".35"/>
+<line x1="760" y1="330" x2="870" y2="330" class="connector" stroke="#818cf8" opacity=".35"/>
+<line x1="760" y1="330" x2="860" y2="395" class="connector" stroke="#818cf8" opacity=".35"/>
+<!-- B4 leaves -->
+<line x1="690" y1="490" x2="790" y2="540" class="connector" stroke="#a5b4fc" opacity=".35"/>
+<line x1="690" y1="490" x2="770" y2="580" class="connector" stroke="#a5b4fc" opacity=".35"/>
+<!-- B5 leaves -->
+<line x1="210" y1="490" x2="130" y2="540" class="connector" stroke="#6366f1" opacity=".35"/>
+<line x1="210" y1="490" x2="115" y2="475" class="connector" stroke="#6366f1" opacity=".35"/>
+<line x1="210" y1="490" x2="135" y2="570" class="connector" stroke="#6366f1" opacity=".35"/>
+<!-- B6 leaves -->
+<line x1="140" y1="330" x2="50" y2="275" class="connector" stroke="#4f46e5" opacity=".35"/>
+<line x1="140" y1="330" x2="45" y2="340" class="connector" stroke="#4f46e5" opacity=".35"/>
+<line x1="140" y1="330" x2="55" y2="400" class="connector" stroke="#4f46e5" opacity=".35"/>
+
+<!-- CENTER -->
+<g class="node" onclick="showInfo('center')">
+  <circle cx="450" cy="310" r="62" fill="#3b82f6"/>
+  <circle cx="450" cy="310" r="58" fill="#3b82f6" opacity=".3"/>
+  <text x="450" y="302" text-anchor="middle" class="center-text" font-size="13">Animateur</text>
+  <text x="450" y="318" text-anchor="middle" class="center-text" font-size="13">3D</text>
+  <text x="450" y="334" text-anchor="middle" fill="#bfdbfe" font-size="9" font-family="Segoe UI">3D Animator</text>
+</g>
+
+<!-- B1 -->
+<g class="node" onclick="showInfo('competences')">
+  <circle cx="210" cy="155" r="42" fill="#0f1929" stroke="#3b82f6" stroke-width="2"/>
+  <text x="210" y="149" text-anchor="middle" class="branch-text" font-size="10">Compétences</text>
+  <text x="210" y="163" text-anchor="middle" class="branch-text" font-size="10">artistiques</text>
+</g>
+<!-- B2 -->
+<g class="node" onclick="showInfo('logiciels')">
+  <circle cx="690" cy="155" r="42" fill="#0f1929" stroke="#60a5fa" stroke-width="2"/>
+  <text x="690" y="149" text-anchor="middle" class="branch-text" font-size="10">Logiciels</text>
+  <text x="690" y="163" text-anchor="middle" class="branch-text" font-size="10">& Outils</text>
+</g>
+<!-- B3 -->
+<g class="node" onclick="showInfo('secteurs')">
+  <circle cx="760" cy="330" r="42" fill="#0f1929" stroke="#818cf8" stroke-width="2"/>
+  <text x="760" y="324" text-anchor="middle" class="branch-text" font-size="10">Secteurs</text>
+  <text x="760" y="338" text-anchor="middle" class="branch-text" font-size="10">& Débouchés</text>
+</g>
+<!-- B4 -->
+<g class="node" onclick="showInfo('formations')">
+  <circle cx="690" cy="490" r="42" fill="#0f1929" stroke="#a5b4fc" stroke-width="2"/>
+  <text x="690" y="484" text-anchor="middle" class="branch-text" font-size="10">Formations</text>
+  <text x="690" y="498" text-anchor="middle" class="branch-text" font-size="10">& Écoles</text>
+</g>
+<!-- B5 -->
+<g class="node" onclick="showInfo('missions')">
+  <circle cx="210" cy="490" r="42" fill="#0f1929" stroke="#6366f1" stroke-width="2"/>
+  <text x="210" y="484" text-anchor="middle" class="branch-text" font-size="10">Missions</text>
+  <text x="210" y="498" text-anchor="middle" class="branch-text" font-size="10">du métier</text>
+</g>
+<!-- B6 -->
+<g class="node" onclick="showInfo('types')">
+  <circle cx="140" cy="330" r="42" fill="#0f1929" stroke="#4f46e5" stroke-width="2"/>
+  <text x="140" y="324" text-anchor="middle" class="branch-text" font-size="10">Types</text>
+  <text x="140" y="338" text-anchor="middle" class="branch-text" font-size="10">d'animation</text>
+</g>
+
+<!-- B1 leaves -->
+<g class="node" onclick="showInfo('l1a')"><rect x="20" y="38" width="110" height="26" class="leaf-rect" stroke="#3b82f6"/><text x="75" y="55" text-anchor="middle" class="leaf-text">Dessin / Sens artistique</text></g>
+<g class="node" onclick="showInfo('l1b')"><rect x="10" y="112" width="115" height="26" class="leaf-rect" stroke="#3b82f6"/><text x="68" y="129" text-anchor="middle" class="leaf-text">Anatomie & mouvement</text></g>
+<g class="node" onclick="showInfo('l1c')"><rect x="18" y="185" width="110" height="26" class="leaf-rect" stroke="#3b82f6"/><text x="73" y="202" text-anchor="middle" class="leaf-text">12 principes anim.</text></g>
+
+<!-- B2 leaves -->
+<g class="node" onclick="showInfo('l2a')"><rect x="730" y="32" width="100" height="26" class="leaf-rect" stroke="#60a5fa"/><text x="780" y="49" text-anchor="middle" class="leaf-text">Blender / Maya</text></g>
+<g class="node" onclick="showInfo('l2b')"><rect x="757" y="95" width="100" height="26" class="leaf-rect" stroke="#60a5fa"/><text x="807" y="112" text-anchor="middle" class="leaf-text">Cinema 4D / 3ds Max</text></g>
+<g class="node" onclick="showInfo('l2c')"><rect x="748" y="162" width="100" height="26" class="leaf-rect" stroke="#60a5fa"/><text x="798" y="179" text-anchor="middle" class="leaf-text">After Effects / Nuke</text></g>
+
+<!-- B3 leaves -->
+<g class="node" onclick="showInfo('l3a')"><rect x="787" y="245" width="100" height="26" class="leaf-rect" stroke="#818cf8"/><text x="837" y="262" text-anchor="middle" class="leaf-text">Jeu vidéo</text></g>
+<g class="node" onclick="showInfo('l3b')"><rect x="793" y="310" width="100" height="26" class="leaf-rect" stroke="#818cf8"/><text x="843" y="327" text-anchor="middle" class="leaf-text">Cinéma / VFX</text></g>
+<g class="node" onclick="showInfo('l3c')"><rect x="787" y="375" width="100" height="26" class="leaf-rect" stroke="#818cf8"/><text x="837" y="392" text-anchor="middle" class="leaf-text">Publicité / Motion</text></g>
+
+<!-- B4 leaves -->
+<g class="node" onclick="showInfo('l4a')"><rect x="737" y="525" width="115" height="26" class="leaf-rect" stroke="#a5b4fc"/><text x="795" y="542" text-anchor="middle" class="leaf-text">Brassart / ESMA</text></g>
+<g class="node" onclick="showInfo('l4b')"><rect x="720" y="562" width="115" height="26" class="leaf-rect" stroke="#a5b4fc"/><text x="778" y="579" text-anchor="middle" class="leaf-text">ISART / ArtFX</text></g>
+
+<!-- B5 leaves -->
+<g class="node" onclick="showInfo('l5a')"><rect x="30" y="525" width="110" height="26" class="leaf-rect" stroke="#6366f1"/><text x="85" y="542" text-anchor="middle" class="leaf-text">Rigging / skinning</text></g>
+<g class="node" onclick="showInfo('l5b')"><rect x="20" y="455" width="110" height="26" class="leaf-rect" stroke="#6366f1"/><text x="75" y="472" text-anchor="middle" class="leaf-text">Animation perso.</text></g>
+<g class="node" onclick="showInfo('l5c')"><rect x="28" y="555" width="115" height="26" class="leaf-rect" stroke="#6366f1"/><text x="85" y="572" text-anchor="middle" class="leaf-text">Rendu & éclairage</text></g>
+
+<!-- B6 leaves -->
+<g class="node" onclick="showInfo('l6a')"><rect x="5" y="253" width="90" height="26" class="leaf-rect" stroke="#4f46e5"/><text x="50" y="270" text-anchor="middle" class="leaf-text">Keyframe</text></g>
+<g class="node" onclick="showInfo('l6b')"><rect x="2" y="318" width="90" height="26" class="leaf-rect" stroke="#4f46e5"/><text x="47" y="335" text-anchor="middle" class="leaf-text">Motion Capture</text></g>
+<g class="node" onclick="showInfo('l6c')"><rect x="8" y="383" width="90" height="26" class="leaf-rect" stroke="#4f46e5"/><text x="53" y="400" text-anchor="middle" class="leaf-text">Procédurale</text></g>
+</svg>
+<div class="tooltip" id="tooltip"></div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>Compétences artistiques</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Logiciels</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#818cf8"></div>Secteurs</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a5b4fc"></div>Formations</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>Missions</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4f46e5"></div>Types d'animation</div>
+</div>
+
+<script>
+const infos = {
+  center: {t:"Animateur 3D", d:"Crée le mouvement des personnages, objets et environnements en 3D. Travaille en lien étroit avec les modélisateurs, riggeurs et développeurs jeu vidéo. C'est le deuxième métier que je vise."},
+  competences: {t:"Compétences artistiques", d:"Un animateur 3D doit avoir le sens du mouvement, comprendre l'anatomie humaine et animale, et maîtriser les 12 principes de l'animation (squash & stretch, anticipation, follow-through...)."},
+  logiciels: {t:"Logiciels & Outils", d:"Blender est l'outil principal que j'explore. Maya est le standard dans les studios professionnels. Cinema 4D est répandu en motion design, After Effects pour la composition 2D/3D."},
+  secteurs: {t:"Secteurs & Débouchés", d:"Jeu vidéo (animation de personnages dans Unity/Unreal), cinéma VFX (effets spéciaux), publicité (motion design), architecture (visualisation). Le secteur du jeu vidéo est le plus dynamique."},
+  formations: {t:"Formations & Écoles", d:"Brassart et ESMA forment aux métiers 3D avec un fort accent artistique. ISART Digital mêle art et technique. ArtFX est spécialisée en effets visuels pour le cinéma."},
+  missions: {t:"Missions du métier", d:"Rigger un personnage (créer le squelette), animer ses mouvements (marche, course, combat), gérer l'éclairage et le rendu final, collaborer avec les game designers et les développeurs."},
+  types: {t:"Types d'animation", d:"Keyframe (pose à pose, la base), motion capture (capturer des mouvements réels), animation procédurale (générée par algorithme). Le jeu vidéo utilise souvent les trois combinés."},
+  l1a: {t:"Dessin & sens artistique", d:"Même en 3D, savoir dessiner aide à visualiser les poses et les mouvements. L'œil artistique permet de juger si une animation est convaincante ou artificielle."},
+  l1b: {t:"Anatomie & mouvement", d:"Comprendre comment fonctionne le corps humain, les articulations, le poids. Un personnage qui marche sans poids ni inertie semble 'flottant' — c'est la faute d'une mauvaise compréhension du mouvement."},
+  l1c: {t:"12 principes de l'animation", d:"Codifiés par Disney dans les années 30 : squash & stretch, anticipation, staging, straight ahead, follow through, slow in/out, arcs, secondary action, timing, exagération, solid drawing, appeal."},
+  l2a: {t:"Blender / Maya", d:"Blender est gratuit, open source et très complet. Je l'utilise pour la modélisation et l'initiation à l'animation. Maya est le standard dans les studios AAA et les productions cinématographiques."},
+  l2b: {t:"Cinema 4D / 3ds Max", d:"Cinema 4D est très utilisé en motion design et en publicité grâce à son interface intuitive. 3ds Max est répandu dans l'architecture et la visualisation 3D."},
+  l2c: {t:"After Effects / Nuke", d:"After Effects pour la composition et le motion design 2D/3D. Nuke est l'outil professionnel de compositing utilisé dans les productions cinématographiques VFX."},
+  l3a: {t:"Jeu vidéo", d:"L'animation 3D est au cœur des jeux modernes. Le jeu vidéo est le secteur qui recrute le plus d'animateurs 3D en France, avec des studios comme Ubisoft, Focus Entertainment ou des studios indépendants."},
+  l3b: {t:"Cinéma / VFX", d:"Les effets spéciaux des films blockbusters sont réalisés par des animateurs 3D. Des studios comme MPC, ILM ou Mikros emploient des centaines d'artistes pour créer des décors et personnages virtuels."},
+  l3c: {t:"Publicité / Motion Design", d:"Les publicités TV et web font largement appel à l'animation 3D. Le motion design mêle animation, typographie et effets visuels pour créer des contenus percutants."},
+  l4a: {t:"Brassart / ESMA", d:"Brassart forme aux métiers créatifs numériques avec un réseau de campus en France. L'ESMA (École Supérieure des Métiers Artistiques) est réputée pour ses productions d'animation de haut niveau."},
+  l4b: {t:"ISART Digital / ArtFX", d:"ISART Digital forme aussi bien aux métiers artistiques (concept art, animation) qu'au développement. ArtFX est spécialisée en effets visuels pour le cinéma et la télévision."},
+  l5a: {t:"Rigging & Skinning", d:"Créer le squelette d'un personnage (rigging) et associer la peau du mesh à ce squelette (skinning). Une base indispensable avant toute animation de personnage."},
+  l5b: {t:"Animation de personnage", d:"Programmer le mouvement d'un personnage : marche, course, saut, combat. Chaque mouvement doit être fluide, crédible et expressif — c'est le cœur du métier d'animateur."},
+  l5c: {t:"Rendu & Éclairage", d:"Paramétrer les lumières, les ombres, les matériaux pour obtenir un rendu final réaliste ou stylisé. Dans le jeu vidéo, optimiser le rendu pour qu'il tourne en temps réel est un enjeu clé."},
+  l6a: {t:"Animation Keyframe", d:"Technique classique : l'animateur définit des poses clés et le logiciel interpole entre elles. Offre un contrôle total mais est chronophage. Indispensable à maîtriser comme base."},
+  l6b: {t:"Motion Capture", d:"Capturer les mouvements d'un acteur réel pour les appliquer à un personnage 3D. Utilisé dans les jeux AAA et les films VFX pour des animations très naturelles et rapides à produire."},
+  l6c: {t:"Animation procédurale", d:"Mouvement généré par des algorithmes plutôt que dessiné à la main. Utilisé pour les foules, la végétation, les fluides. De plus en plus couplé avec l'IA dans les moteurs modernes."},
+};
+
+const tip = document.getElementById('tooltip');
+const container = document.getElementById('mapContainer');
+
+function showInfo(key) {
+  const d = infos[key];
+  if (!d) return;
+  tip.innerHTML = `<strong style="color:#60a5fa">${d.t}</strong><br/><span style="color:#94a3b8">${d.d}</span>`;
+  tip.style.opacity = '1';
+  setTimeout(() => { tip.style.opacity = '0'; }, 4500);
+}
+
+container.addEventListener('mousemove', e => {
+  const r = container.getBoundingClientRect();
+  let x = e.clientX - r.left + 12;
+  let y = e.clientY - r.top + 12;
+  if (x + 260 > r.width) x = e.clientX - r.left - 260;
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+});
+</script>
+</body>
+</html>
