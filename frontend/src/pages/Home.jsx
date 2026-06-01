@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { portfolioData } from '../mock';
-import { MapPin, Heart, ArrowRight, FileText } from 'lucide-react';
+import { MapPin, ArrowRight, FileText } from 'lucide-react';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import Navbar from '../components/Navbar';
@@ -30,7 +30,6 @@ export default function Home() {
                 <MapPin className="w-4 h-4 mr-2" /> {portfolioData.profile.location}
               </Badge>
               <Badge className="bg-slate-100 text-slate-700 px-4 py-2 text-sm">BTS SIO SLAM</Badge>
-              <Badge className="bg-green-100 text-green-700 px-4 py-2 text-sm">Recherche de stage</Badge>
             </div>
             <div className="flex flex-wrap gap-3 justify-center md:justify-start">
               <Link to="/contact">
@@ -54,7 +53,6 @@ export default function Home() {
       <section className="py-20 px-6 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-8">
-            <Heart className="w-7 h-7 text-salmon-500" />
             <h2 className="text-3xl font-bold text-slate-900">Présentation</h2>
           </div>
           <div className="text-lg text-slate-700 leading-relaxed space-y-4">

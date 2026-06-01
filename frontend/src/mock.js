@@ -19,12 +19,6 @@ Je suis basé à Troyes, en formation à distance, et je cherche un stage en dé
 
   timeline: [
     {
-      period: "2020",
-      title: "Brevet des collèges",
-      description: "",
-      location: "Troyes"
-    },
-    {
       period: "2020 — 2023",
       title: "Lycée général — Baccalauréat 2023",
       description: "Spécialités SVT & Anglais, Mathématiques complémentaires",

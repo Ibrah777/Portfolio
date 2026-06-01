@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { portfolioData } from '../mock';
 import {
-  Briefcase, Code, Database, Wrench, Heart, Joystick,
+  Code, Database, Wrench, Heart, Joystick,
   Gamepad2, Lock, Swords, Globe, ShoppingCart, Box, Calendar,
   ExternalLink, Github, ChevronDown, ChevronUp, CheckCircle2, Newspaper
 } from 'lucide-react';
@@ -113,7 +113,6 @@ export default function Projets() {
         <div className="max-w-6xl mx-auto">
 
           <div className="flex items-center gap-3 mb-2">
-            <Briefcase className="w-7 h-7 text-salmon-500" />
             <h1 className="text-3xl font-bold text-slate-900">Projets & Réalisations</h1>
           </div>
           <p className="text-slate-500 mb-10 text-sm">
@@ -128,7 +127,6 @@ export default function Projets() {
 
           {/* Compétences */}
           <div className="flex items-center gap-3 mb-3">
-            <Code className="w-7 h-7 text-salmon-500" />
             <h2 className="text-3xl font-bold text-slate-900">Compétences</h2>
           </div>
           <p className="text-slate-500 text-sm mb-8">Compétences en cours d'acquisition — BTS SIO SLAM, 1ère année.</p>
@@ -160,10 +158,15 @@ export default function Projets() {
 
           {/* Mini-jeux */}
           <div className="flex items-center gap-3 mb-4">
-            <Joystick className="w-7 h-7 text-salmon-400" />
             <h2 className="text-3xl font-bold text-slate-900">Mini-Jeux</h2>
           </div>
-          <p className="text-slate-600 mb-10">Démos de mes compétences en développement de jeux web.</p>
+          <p className="text-slate-600 mb-6">Démos de mes compétences en développement de jeux web.</p>
+          <div className="mb-6">
+            <a href="https://github.com/Ibrah777/jeux-web" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white text-sm px-4 py-2 rounded-lg transition-colors">
+              <Github className="w-4 h-4" /> Voir le repo GitHub — jeux-web
+            </a>
+          </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { to: '/games/snake', title: 'Snake', desc: 'Le classique revisité', tech: 'Canvas · JavaScript' },

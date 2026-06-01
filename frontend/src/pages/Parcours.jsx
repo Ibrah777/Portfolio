@@ -1,6 +1,6 @@
 import React from 'react';
 import { portfolioData } from '../mock';
-import { Calendar, GraduationCap, Target, Map } from 'lucide-react';
+import { Map } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
@@ -18,7 +18,6 @@ export default function Parcours() {
 
           {/* Timeline */}
           <div className="flex items-center gap-3 mb-10">
-            <Calendar className="w-7 h-7 text-salmon-500" />
             <h1 className="text-3xl font-bold text-slate-900">Parcours</h1>
           </div>
           <div className="space-y-0 mb-20">
@@ -42,7 +41,6 @@ export default function Parcours() {
 
           {/* Formation */}
           <div className="flex items-center gap-3 mb-8">
-            <GraduationCap className="w-7 h-7 text-salmon-500" />
             <h2 className="text-3xl font-bold text-slate-900">Formation actuelle</h2>
           </div>
           <Card className="border-2 border-salmon-200 shadow-md mb-20">
@@ -66,7 +64,6 @@ export default function Parcours() {
 
           {/* Métiers visés */}
           <div className="flex items-center gap-3 mb-8">
-            <Target className="w-7 h-7 text-salmon-500" />
             <h2 className="text-3xl font-bold text-slate-900">Métiers visés</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6 mb-10">
@@ -85,7 +82,6 @@ export default function Parcours() {
 
           {/* Cartes heuristiques */}
           <div className="flex items-center gap-3 mb-8">
-            <Map className="w-7 h-7 text-salmon-500" />
             <h2 className="text-3xl font-bold text-slate-900">Cartes heuristiques</h2>
           </div>
           <p className="text-slate-600 mb-6 text-sm">Cartes mentales interactives explorant les compétences, outils et débouchés de chaque métier visé. Réalisées dans le cadre de ma veille professionnelle.</p>
