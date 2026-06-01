@@ -13,7 +13,7 @@ import Footer from '../components/Footer';
 
 const iconMap = {
   gamepad: Gamepad2, box: Box, lock: Lock, swords: Swords,
-  globe: Globe, 'shopping-cart': ShoppingCart, briefcase: Briefcase,
+  globe: Globe, 'shopping-cart': ShoppingCart,
   wrench: Wrench, calendar: Calendar, newspaper: Newspaper
 };
 

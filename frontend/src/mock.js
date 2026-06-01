@@ -11,9 +11,9 @@ export const portfolioData = {
     cv: "/cv_ibrahima_dione.pdf"
   },
 
-  about: `Je suis en 1ère année de BTS SIO option SLAM au CNED. Avant ça, j'ai fait deux ans de Licence AES à Paris-Assas (antenne de Melun) avant de me réorienter vers l'informatique — un choix que j'aurais dû faire plus tôt.
+  about: `Je suis en 1ère année de BTS SIO option SLAM au CNED. Avant ça, j'ai fait deux ans de Licence AES à Paris-Assas (antenne de Melun) avant de me réorienter vers l'informatique — un [...]
 
-Ce qui me plaît vraiment, c'est le jeu vidéo et la 3D. Je joue depuis longtemps, j'ai commencé à scripter sur Roblox Studio, et depuis j'explore Unity, Unreal Engine 5 et Blender. Le BTS SLAM, c'est pour poser des bases solides côté développement.
+Ce qui me plaît vraiment, c'est le jeu vidéo et la 3D. Je joue depuis longtemps, j'ai commencé à scripter sur Roblox Studio, et depuis j'explore Unity, Unreal Engine 5 et Blender. Le BTS SLAM,[...]
 
 Je suis basé à Troyes, en formation à distance, et je cherche un stage en développement pour la fin de l'année scolaire.`,
 
@@ -40,7 +40,7 @@ Je suis basé à Troyes, en formation à distance, et je cherche un stage en dé
 
   formation: {
     title: "BTS SIO - SLAM",
-    description: "Le BTS SIO, option SLAM, c'est 2 ans de dev : langages, bases de données, architecture logicielle, travail en équipe avec Git. J'ai choisi cette voie pour avoir de vraies bases en programmation avant de me spécialiser.",
+    description: "Le BTS SIO, option SLAM, c'est 2 ans de dev : langages, bases de données, architecture logicielle, travail en équipe avec Git. J'ai choisi cette voie pour avoir de vraies bases[...]",
     topics: [
       "La programmation en C#, Java, PHP et Python",
       "La conception de bases de données (MySQL, PostgreSQL, MongoDB)",
@@ -56,19 +56,19 @@ Je suis basé à Troyes, en formation à distance, et je cherche un stage en dé
     {
       title: "Développeur Jeu Vidéo",
       subtitle: "Game Developer",
-      description: "C'est le métier que je vise en priorité. Je bidouille déjà avec Unity (C#) et Unreal Engine 5 (Blueprints, un peu de C++). Après le BTS, j'aimerais intégrer une école spécialisée — ISART Digital ou Brassart.",
+      description: "C'est le métier que je vise en priorité. Je bidouille déjà avec Unity (C#) et Unreal Engine 5 (Blueprints, un peu de C++). Après le BTS, j'aimerais intégrer une école sp[...]",
       icon: "gamepad"
     },
     {
       title: "Animateur 3D",
       subtitle: "3D Animator",
-      description: "Je suis initié à Blender — modélisation, matériaux, un peu d'animation. C'est un domaine qui m'attire autant que le code, surtout pour le jeu vidéo où les deux se rejoignent.",
+      description: "Je suis initié à Blender — modélisation, matériaux, un peu d'animation. C'est un domaine qui m'attire autant que le code, surtout pour le jeu vidéo où les deux se rejoi[...]",
       icon: "box"
     },
     {
       title: "Développeur Web Full-Stack",
       subtitle: "Web Developer",
-      description: "Ce portfolio tourne sur React + FastAPI + MongoDB — c'est déjà du full-stack. C'est une compétence utile partout, et j'y prends goût même si ce n'est pas ma priorité numéro 1.",
+      description: "Ce portfolio tourne sur React + FastAPI + MongoDB — c'est déjà du full-stack. C'est une compétence utile partout, et j'y prends goût même si ce n'est pas ma priorité nu[...]",
       icon: "globe"
     }
   ],
@@ -175,21 +175,21 @@ Je suis basé à Troyes, en formation à distance, et je cherche un stage en dé
   ],
 
   veille: {
-    intro: "Ma veille repose sur trois dispositifs : Google Alertes (mots-clés ciblés envoyés par mail), Feedly pour agréger les flux RSS en un seul endroit, et une liste de sites consultés régulièrement. J'évalue les sources selon la méthode QQOQCCP — auteur, date, origine, fréquence de l'information — avant de les retenir.",
+    intro: "Ma veille repose sur trois dispositifs : Google Alertes (mots-clés ciblés envoyés par mail), Feedly pour agréger les flux RSS en un seul endroit, et une liste de sites consultés [...]",
     themes: [
       {
         title: "Développement de jeux vidéo & moteurs graphiques",
-        description: "Unity et Unreal Engine sortent régulièrement des mises à jour majeures. Je suis ce thème en priorité car c'est mon domaine cible : il est essentiel de connaître les nouvelles fonctionnalités (Lumen, Nanite, DOTS...) pour rester compétitif. Sources vérifiées via les blogs officiels des éditeurs.",
+        description: "Unity et Unreal Engine sortent régulièrement des mises à jour majeures. Je suis ce thème en priorité car c'est mon domaine cible : il est essentiel de connaître les no[...]",
         sources: ["80.lv", "Game Developer Magazine", "Brackeys (YouTube)", "Unity Blog", "Epic Games Dev"]
       },
       {
         title: "Animation 3D & outils de création numérique",
-        description: "Blender évolue vite grâce à une communauté très active. Je l'utilise pour la modélisation et l'initiation à l'animation — des compétences complémentaires au code dans le jeu vidéo. Je surveille les nouvelles versions et les workflows d'exportation vers Unity/Unreal.",
+        description: "Blender évolue vite grâce à une communauté très active. Je l'utilise pour la modélisation et l'initiation à l'animation — des compétences complémentaires au code [...]",
         sources: ["Blender.org", "CGTrader", "ArtStation", "YouTube — Blender Guru"]
       },
       {
         title: "Développement web & technologies back-end",
-        description: "React, FastAPI et MongoDB sont au cœur de ce portfolio — je dois donc rester à jour sur leurs évolutions. Ce thème couvre aussi les bonnes pratiques (SOLID, tests, sécurité) apprises en BTS SIO que j'applique sur mes projets. Je consulte Dev.to et HackerNews pour les retours d'expérience de la communauté.",
+        description: "React, FastAPI et MongoDB sont au cœur de ce portfolio — je dois donc rester à jour sur leurs évolutions. Ce thème couvre aussi les bonnes pratiques (SOLID, tests, sé[...]",
         sources: ["Dev.to", "HackerNews", "MDN Web Docs", "FastAPI Docs", "OpenClassrooms"]
       }
     ]
