@@ -153,7 +153,7 @@ Je suis basé à Troyes, en formation à distance, et je cherche un stage en dé
       title: "Atelier 2",
       description: "Projet de développement collaboratif en équipe — application web Mediatek86 pour la gestion de catalogue de médias.",
       tech: "À déterminer",
-      status: "En cours",
+      status: "Terminé",
       icon: "wrench",
       github: "https://github.com/Ibrah777/Mediatek86",
       color: "from-yellow-100 to-amber-100",
