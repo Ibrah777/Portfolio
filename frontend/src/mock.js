@@ -109,7 +109,7 @@ Je suis basé à Troyes, en formation à distance, et je cherche un stage en dé
       title: "Jeu de combat 2D Client/Serveur",
       description: "Jeu multijoueur en réseau avec architecture client-serveur, gestion des états et tours de jeu.",
       tech: "Java, Sockets",
-      status: "En cours",
+      status: "Test",
       icon: "swords",
       github: null,
       color: "from-red-100 to-orange-100",
