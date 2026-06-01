@@ -162,9 +162,9 @@ export default function Projets() {
           </div>
           <p className="text-slate-600 mb-6">Démos de mes compétences en développement de jeux web.</p>
           <div className="mb-6">
-            <a href="https://github.com/Ibrah777/jeux-web" target="_blank" rel="noopener noreferrer"
+            <a href="https://github.com/Ibrah777/Web-games" target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white text-sm px-4 py-2 rounded-lg transition-colors">
-              <Github className="w-4 h-4" /> Voir le repo GitHub — jeux-web
+              <Github className="w-4 h-4" /> Voir le repo GitHub — Web-games
             </a>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
