@@ -2,7 +2,7 @@
 
 Portfolio personnel développé avec React, FastAPI et MongoDB.
 
-## Fonctionnalités
+## Fonctionnalités.
 
 * Présentation de mon parcours
 * Présentation de mes projets
